@@ -1,0 +1,7 @@
+FUENTE CRONUS (Sharkshock) - https://www.1001freefonts.com/es/cronus.font
+1. Descarga el .zip desde esa página y descomprímelo.
+2. Copia aquí "Cronus Round.otf" y renómbralo:  cronus-round.otf
+   (si existe la versión en negrita, cópiala como:  cronus-round-bold.otf)
+3. Listo: la app la usa sola. Mientras no esté, se ve la fuente redondeada de respaldo (Nunito).
+LICENCIA: en 1001freefonts Cronus aparece como gratis para USO PERSONAL. Para una app pública
+(concurso, colegio) confirma con el diseñador (Sharkshock) o usa la respaldo, que es libre.

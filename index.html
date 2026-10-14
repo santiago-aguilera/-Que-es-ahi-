@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2e1a0e"><title>¿Qué es ahí? — Bogotá</title>
+<meta name="description" content="Historia y civilidad de las manzanas alrededor de la Plaza de Bolívar, Bogotá. Conocer el territorio es aprender a cuidarlo.">
+<meta property="og:title" content="¿Qué es ahí? — Bogotá"><meta property="og:description" content="Memorias que construyen ciudad: la Plaza de Bolívar en 7 capas.">
+<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="assets/css/styles.css"></head>
+<body>
+<a class="skip" href="#main">Saltar al contenido</a>
+<div class="splash" id="splash" aria-hidden="true"><div><img class="logo big" alt=""><h1>¿Qué es ahí?</h1><p>Memorias que construyen ciudad</p><div class="bar"><i></i></div></div></div>
+<main id="main">
+<section class="view on" id="view-mapa" aria-label="Mapa">
+ <div class="top"><img class="logo" alt="Logo ¿Qué es ahí?"><div><h1>¿Qué es ahí?</h1><p>Toca una burbuja o abre la línea de tiempo.</p></div></div>
+ <div class="mapwrap">
+  <div id="map" role="application" aria-label="Mapa de la Plaza de Bolívar y sus manzanas"></div>
+  <button class="tl-btn" id="btnTL" aria-expanded="false" aria-controls="tl-drawer">⏳ Línea de tiempo</button>
+  <button class="chipanio" id="chipAnio" hidden></button>
+  <aside class="drawer" id="tl-drawer" aria-label="Línea de tiempo" aria-hidden="true">
+   <header><h2>⏳ Línea de tiempo</h2><button id="tl-x" aria-label="Cerrar línea de tiempo">✕</button></header>
+   <div class="body" id="tl-body"></div>
+  </aside>
+  <div class="cta-row"><button class="cta alt" id="btnTour">🧭 Recorrido</button><button class="cta" id="btnHere">📍 ¿Qué es ahí?</button></div>
+ </div>
+</section>
+<section class="view" id="view-capas" aria-label="Capas">
+ <div class="top"><img class="logo" alt="Logo ¿Qué es ahí?"><div><h1>Toda la Plaza, por capas</h1><p>Una capa a la vez, en todos los lugares.</p></div></div>
+ <div class="wrap"><div class="hero" id="hero"></div><div class="chips" id="capa-chips" role="tablist"></div><div id="capa-out"></div></div>
+</section>
+<section class="view" id="view-lugares" aria-label="Instituciones">
+ <div class="top"><img class="logo" alt="Logo ¿Qué es ahí?"><div><h1>Instituciones</h1><p>Un lugar, siete capas</p></div></div>
+ <div class="wrap"><input class="search" id="q" type="search" placeholder="Buscar lugar, calle o tema…" aria-label="Buscar"><p class="soft" id="q-n"></p><div class="grid" id="grid"></div></div>
+</section>
+<section class="view" id="view-acerca" aria-label="Acerca">
+ <div class="top"><img class="logo" alt="Logo ¿Qué es ahí?"><div><h1>Acerca del proyecto</h1><p>Memorias que construyen ciudad</p></div></div>
+ <div class="wrap">
+  <p>«¿Qué es ahí?» es una app libre y gratuita del equipo <b>Potentes ciudadanos</b> del Colegio Instituto Técnico Distrital Julio Flórez, creada para un concurso sobre civilidad.</p>
+  <p>La idea: quien conoce la historia y la cultura de su territorio lo cuida y lo respeta. Cada lugar se lee en siete capas.</p>
+  <h3 class="sec">📖 Nuestro libro</h3><div id="libro-box"></div>
+  <h3 class="sec">Las 7 capas</h3><div class="leyenda" id="leyenda"></div>
+  <h3 class="sec">Logos del proyecto</h3><div class="logos" id="logos"></div>
+ </div>
+</section>
+</main>
+<aside id="ficha" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Ficha del lugar"></aside>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<nav aria-label="Navegación principal">
+ <button data-v="mapa" class="on"><i>🗺️</i>Mapa</button><button data-v="capas"><i>📚</i>Capas</button><button data-v="lugares"><i>🏛️</i>Lugares</button><button data-v="acerca"><i>📖</i>Acerca</button>
+</nav>
+<noscript><p style="padding:20px">Esta app necesita JavaScript.</p></noscript>
+<script defer src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script defer src="data/capas.js"></script><script defer src="data/lugares.js"></script><script defer src="data/linea.js"></script><script defer src="data/libro.js"></script><script defer src="data/config.js"></script>
+<script defer src="assets/js/util.js"></script><script defer src="assets/js/mapa.js"></script><script defer src="assets/js/linea.js"></script><script defer src="assets/js/ficha.js"></script>
+<script defer src="assets/js/capas.js"></script><script defer src="assets/js/instituciones.js"></script><script defer src="assets/js/libro.js"></script>
+<script defer src="assets/js/nav.js"></script><script defer src="assets/js/app.js"></script>
+</body></html>
