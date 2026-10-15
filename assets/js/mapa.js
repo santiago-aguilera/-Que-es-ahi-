@@ -1,7 +1,12 @@
 /* Mapa, viaje en el tiempo, recorrido guiado y geolocalización. */
 const Mapa={map:null,mk:{},timer:null,
 init(){
-  const m=this.map=L.map("map",{zoomControl:false,zoomAnimation:!calma}).setView([4.59808,-74.07605],17);
+  const m=this.map=L.map("map",{zoomControl:false,attributionControl:false,zoomAnimation:!calma}).setView([4.59808,-74.07605],17);
+  // Créditos del mapa (obligatorios para Esri/OSM): arriba a la derecha y plegados en un ícono ⓘ en el celular
+  const at=L.control.attribution({position:"topright",prefix:false}).addTo(m),ac=at.getContainer();
+  ac.classList.add("att");ac.setAttribute("role","button");ac.setAttribute("aria-label","Créditos del mapa");ac.tabIndex=0;
+  if(innerWidth<760)ac.classList.add("min");
+  ac.onclick=()=>ac.classList.toggle("min");ac.onkeydown=e=>{if(e.key==="Enter"||e.key===" ")ac.classList.toggle("min")};
   const base=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",{maxZoom:19,attribution:"Tiles &copy; Esri &mdash; Source: Esri, DeLorme, NAVTEQ, OpenStreetMap contributors"}).addTo(m);
   let fails=0;base.on("tileerror",()=>{if(++fails!==4)return;m.removeLayer(base);L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(m);toast("Cambié automáticamente a otro mapa base.")});
   LUGARES.forEach((p,i)=>{
