@@ -1,8 +1,8 @@
 // CONFIGURACIÓN GENERAL
 const CONFIG = {
   // Logo del PROYECTO (SIMULADO por ahora): se ve en toda la app. Para cambiarlo, reemplaza el archivo (o cambia la ruta/extensión aquí).
-  logoApp: "assets/img/logo.png",
-  logoRespaldo: "assets/img/logo.png",   // se usa mientras no exista logoApp
+  logoApp: "assets/img/logo_1.png",
+  logoRespaldo: "assets/img/logo_1.png",   // se usa mientras no exista logoApp
   // Logos de la pestaña Acerca (SIMULADOS por ahora; agrega o quita los que necesites)
   logos: [
     { src: "assets/img/logos/logo_1.png", alt: "Logo 1" },
