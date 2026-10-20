@@ -1,6 +1,6 @@
 /* Service worker: la app abre sin conexión y guarda los mapas ya vistos (útil con datos móviles limitados).
    Si cambias archivos, sube el número de versión V para que todos reciban la actualización. */
-const V="qea-v7",SHELL=["./","index.html","manifest.webmanifest","assets/css/styles.css","assets/img/icon.svg","assets/img/logo-app.svg","data/capas.js","data/lugares.js","data/libro.js","data/linea.js","data/config.js","data/fotos.js",
+const V="qea-v8",SHELL=["./","index.html","manifest.webmanifest","assets/css/styles.css","assets/img/icon.svg","assets/img/logo-app.svg","data/capas.js","data/lugares.js","data/libro.js","data/linea.js","data/config.js","data/fotos.js",
  "assets/js/util.js","assets/js/mapa.js","assets/js/linea.js","assets/js/ficha.js","assets/js/capas.js","assets/js/instituciones.js","assets/js/libro.js","assets/js/nav.js","assets/js/app.js"];
 self.addEventListener("install",e=>e.waitUntil(caches.open(V).then(c=>c.addAll(SHELL)).then(()=>self.skipWaiting())));
 self.addEventListener("activate",e=>e.waitUntil(caches.keys().then(k=>Promise.all(k.filter(x=>x!==V&&x!=="qea-tiles").map(x=>caches.delete(x)))).then(()=>clients.claim())));
