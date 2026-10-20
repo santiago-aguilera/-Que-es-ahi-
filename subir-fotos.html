@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#2e1a0e"><title>Sube tu foto — ¿Qué es ahí?</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/img/logo_1.png">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800&display=swap">
+<link rel="stylesheet" href="assets/css/styles.css">
+<style>
+  html,body{height:auto;min-height:100%}
+  form{display:grid;gap:16px;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:18px}
+  label{display:grid;gap:5px;font-weight:800;font-size:.95rem}
+  label small{font-weight:400;color:var(--soft)}
+  input,select,textarea{font:inherit;color:var(--ink);background:var(--bg);border:2px solid var(--line);border-radius:12px;padding:11px 12px;width:100%}
+  .check{display:flex;gap:10px;align-items:flex-start;font-weight:400}.check input{width:22px;height:22px;flex:none;margin-top:2px}
+  .hp{position:absolute;left:-9999px}
+  .prev{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+  .prev img{width:100%;aspect-ratio:1;object-fit:cover;border-radius:10px;border:2px solid var(--line)}
+  .go{width:100%;border-radius:999px;padding:14px;font-size:1rem;cursor:pointer}.go[disabled]{opacity:.6;cursor:progress}
+  progress{width:100%;height:10px;accent-color:var(--brick)}
+  #msg{min-height:1.4em;font-weight:800}.ok{color:#2f6b3a}.err{color:#a11d1d}
+  .back{display:inline-block;margin-bottom:12px;color:var(--brick);font-weight:800;text-decoration:none}
+  .hero{background:var(--dark);color:#f6e7c4;border-radius:14px;padding:14px 16px;margin-bottom:14px}.hero p{margin:0;color:#d8c08e;font-size:.9rem}
+</style></head>
+<body>
+<a class="skip" href="#f">Saltar al formulario</a>
+<div class="top"><img class="logo" alt="Logo ¿Qué es ahí?"><div><h1>Sube tu foto</h1><p>Memorias que construyen ciudad</p></div></div>
+<main class="wrap" style="padding-bottom:40px">
+  <a class="back" id="back" href="index.html">← Volver a la app</a>
+  <div class="hero"><p>Ayúdanos a llenar de memoria la Plaza de Bolívar. Tu foto se revisa antes de publicarse, y siempre llevará tu crédito.</p></div>
+  <form id="f" novalidate>
+    <label>¿De qué lugar es?<select id="lugar" required></select></label>
+    <label>¿De qué época?<select id="epoca" required></select></label>
+    <label>Fotos <small>(hasta 6; se reducen solas para gastar pocos datos)</small><input id="fotos" type="file" accept="image/*" multiple required></label>
+    <div class="prev" id="prev" aria-live="polite"></div>
+    <label>Describe lo que se ve <small>(obligatorio: es el texto alternativo para quienes no ven la imagen)</small>
+      <textarea id="alt" rows="3" maxlength="300" required placeholder="Ej.: Fachada de la iglesia de San Ignacio vista desde la plazoleta, con personas caminando."></textarea></label>
+    <label>Tu nombre (crédito)<input id="autor" maxlength="80" required autocomplete="name"></label>
+    <label>Fuente o archivo <small>(si es una foto antigua, ¿de dónde la sacaste?)</small><input id="fuente" maxlength="200" placeholder="Ej.: Álbum familiar, Archivo de Bogotá, tomada por mí"></label>
+    <label>Año aproximado <small>(opcional)</small><input id="anio" maxlength="20" inputmode="numeric" placeholder="1948"></label>
+    <input class="hp" id="web" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <label class="check"><input type="checkbox" id="ok" required><span>Esta foto es mía o tengo permiso para compartirla, y autorizo que aparezca en la app (gratuita y educativa) con mi crédito.</span></label>
+    <progress id="bar" max="1" value="0" hidden></progress>
+    <button class="btn go" id="go" type="submit">📷 Enviar foto</button>
+    <div id="msg" role="status" aria-live="polite"></div>
+  </form>
+</main>
+<script src="data/capas.js"></script><script src="data/lugares.js"></script><script src="data/config.js"></script><script src="assets/js/util.js"></script>
+<script>
+const MAX_SIDE=1600,QUALITY=.8,MAX_FILES=6;
+logoFix();
+const opts=(arr,ph)=>`<option value="">${ph}</option>`+arr.map(([v,t])=>`<option value="${esc(v)}">${esc(t)}</option>`).join("");
+$("#lugar").innerHTML=opts(LUGARES.map(p=>[p.id,p.name]),"Elige un lugar…");
+$("#epoca").innerHTML=opts([...EPOCAS.map(e=>[e.id,e.id]),["Sin clasificar","No sé / sin clasificar"]],"Elige una época…");
+const pre=new URLSearchParams(location.search).get("lugar");
+if(pre&&byId(pre)){$("#lugar").value=pre;$("#back").href="index.html#lugar/"+pre}
+
+const compress=f=>new Promise((res,rej)=>{const im=new Image(),u=URL.createObjectURL(f);
+  im.onload=()=>{const k=Math.min(1,MAX_SIDE/Math.max(im.width,im.height)),c=document.createElement("canvas");
+    c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);
+    c.toBlob(b=>b?res(b):rej(new Error("No se pudo procesar la imagen")),"image/jpeg",QUALITY)};
+  im.onerror=()=>rej(new Error("Archivo no válido: "+f.name));im.src=u});
+const b64=b=>new Promise(r=>{const fr=new FileReader();fr.onload=()=>r(fr.result.split(",")[1]);fr.readAsDataURL(b)});
+
+$("#fotos").onchange=e=>{const p=$("#prev");p.innerHTML="";[...e.target.files].slice(0,MAX_FILES).forEach(f=>{const i=document.createElement("img");i.src=URL.createObjectURL(f);i.alt="Vista previa de "+f.name;p.appendChild(i)})};
+
+$("#f").onsubmit=async e=>{e.preventDefault();const m=$("#msg");m.className="";m.textContent="";
+  const files=[...$("#fotos").files].slice(0,MAX_FILES);
+  if(!$("#f").checkValidity()||!files.length){$("#f").reportValidity();if(!files.length)m.textContent="Elige al menos una foto.";return}
+  if(!CONFIG.fotosEndpoint){m.className="err";m.textContent="El envío aún no está configurado (falta fotosEndpoint en data/config.js).";return}
+  $("#go").disabled=true;$("#bar").hidden=false;$("#bar").value=0;
+  try{for(let i=0;i<files.length;i++){m.textContent=`Enviando foto ${i+1} de ${files.length}…`;
+      const body=JSON.stringify({lugar:$("#lugar").value,epoca:$("#epoca").value,alt:$("#alt").value.trim(),autor:$("#autor").value.trim(),
+        fuente:$("#fuente").value.trim(),anio:$("#anio").value.trim(),consentimiento:$("#ok").checked,web:$("#web").value,mime:"image/jpeg",data:await b64(await compress(files[i]))});
+      // text/plain + no-cors: evita el bloqueo CORS de Apps Script (la respuesta no se puede leer)
+      await fetch(CONFIG.fotosEndpoint,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body});
+      $("#bar").value=(i+1)/files.length}
+    m.className="ok";m.textContent="¡Gracias! Tu foto quedó en revisión y pronto podrá aparecer en la app.";$("#f").reset();$("#prev").innerHTML="";
+    if(pre&&byId(pre))$("#lugar").value=pre;
+  }catch(err){m.className="err";m.textContent="No se pudo enviar: "+err.message+". Revisa tu conexión e inténtalo de nuevo."}
+  finally{$("#go").disabled=false;$("#bar").hidden=true}};
+</script></body></html>
