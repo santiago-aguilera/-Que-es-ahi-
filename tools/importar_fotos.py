@@ -48,9 +48,7 @@ def main():
             if src in existentes:
                 continue
             shutil.copy2(origen, destino)
-            fotos.append({"lugar": lugar, "epoca": epoca, "src": src, "alt": fila["Alt"].strip(),
-                          "autor": fila["Autor"].strip(), "fuente": fila.get("Fuente", "").strip(),
-                          "anio": fila.get("Anio", "").strip()})
+            fotos.append({"lugar": lugar, "epoca": epoca, "src": src, "alt": fila["Alt"].strip(),"autor": fila["Autor"].strip(), "fuente": fila.get("Fuente", "").strip(),"anio": fila.get("Anio", "").strip()})
             nuevas += 1
     FOTOS_JS.write_text(CABECERA + "const FOTOS = " + json.dumps(fotos, ensure_ascii=False, indent=1) + ";\n", encoding="utf-8")
     print(f"✔ {nuevas} fotos nuevas · {saltadas} saltadas · total en la app: {len(fotos)}")
