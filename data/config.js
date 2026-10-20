@@ -9,4 +9,6 @@ const CONFIG = {
     { src: "assets/img/logos/logo_2.png", alt: "Logo 2" },
     { src: "assets/img/logos/logo_3.png", alt: "Logo 3" },
   ]
+    // URL de tu Apps Script (termina en /exec). Mientras esté vacía, los botones "Sube tu foto" no se muestran.
+  fotosEndpoint: "https://script.google.com/macros/s/AKfycbxtJRenPk63y37hzNXsoEbtLU1T1Qf9dXwSrL0VOR2be-xeT8_suLjjHWqKlGdTQ-g/exec"
 };
